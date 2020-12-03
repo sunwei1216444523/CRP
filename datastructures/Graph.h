@@ -74,6 +74,7 @@ struct EdgeAttributes {
 
 /**
  * Model an outgoing edge of a vertex. The edge enters vertex @a head at @a entryPoint.
+ * 从 @a head 的所有入点的第 @a entryPoint 个处指向点 @a head 的边 
  */
 struct ForwardEdge {
 	index head;
@@ -83,6 +84,7 @@ struct ForwardEdge {
 
 /**
  * Model an incoming edge of a vertex. The edge exits vertex @a tail at @a exitPoint.
+ * 从点 @a tail 指向其第 @a exitPoint 个出点的边.
  */
 struct BackwardEdge {
 	index tail;

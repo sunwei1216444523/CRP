@@ -83,6 +83,9 @@ std::vector<bool> OverlayGraph::buildOverlayVertices(Graph& graph, level numberO
 	for (auto& v : overlayVerticesByLevel) {
 		vertexCountInLevel.push_back(v.size());
 	}
+	// 第3层的要加上第4层的所有数量，第2层要加上刚才加了4层的第3层的数量，。。。。第0层就包含了所有层的overlayVertex的数量了。
+	// 所以，vertexCountInLevel的排布是[level0, level1, level2, level3, level4]
+	// 叠加后，vertexCountInLevel变为 [l0+l1+l2+l3+l4, l1+l2+l3+l4, l2+l3+l4, l3+l4, l4]
 	std::partial_sum(vertexCountInLevel.rbegin(), vertexCountInLevel.rend(), vertexCountInLevel.rbegin());
 	const count overlayVertexCount = vertexCountInLevel[0];
 
@@ -93,12 +96,13 @@ std::vector<bool> OverlayGraph::buildOverlayVertices(Graph& graph, level numberO
 	// of the original graph to vertices of the overlay graph is built.
 	std::unordered_map<SubVertex, index, SubVertexHasher> originalToOverlayVertexMap;
 	originalToOverlayVertexMap.reserve(overlayVertexCount);
-	std::vector<bool> exitFlagsArray(overlayVertexCount);
+	std::vector<bool> exitFlagsArray(overlayVertexCount); // 用于标识出为cell出点的overlayvertex
 
 	for (size_t j = 0; j < overlayVerticesByLevel.size(); ++j) {
 		auto& v = overlayVerticesByLevel[j];
 		const index vertexOffset = vertexCountInLevel[j] - v.size();
 		std::vector<index> newToOldPosition(v.size());
+		// 由头至尾，从0自动递增
 		std::iota(newToOldPosition.begin(), newToOldPosition.end(), 0);
 
 		std::sort(newToOldPosition.begin(), newToOldPosition.end(), [&](index lhs, index rhs) {
@@ -116,6 +120,7 @@ std::vector<bool> OverlayGraph::buildOverlayVertices(Graph& graph, level numberO
 			vertex.neighborOverlayVertex = oldToNewPosition[vertex.neighborOverlayVertex] + vertexOffset;
 			sortedVertices.push_back(vertex);
 
+			// 偶数位的都是出点
 			bool isExitPoint = newToOldPosition[i] % 2 == 0;
 			exitFlagsArray[i + vertexOffset] = isExitPoint;
 

@@ -70,7 +70,7 @@ void buildCellNumbers(Graph& graph, const MultiLevelPartition& mlp) {
 
 Graph buildGraph() {
 	std::vector<Vertex> vertices;
-	vertices.push_back({0, 0, 0, 0, {0, 0}});
+	vertices.push_back({0, 0, 0, 0, {0, 0}}); // firstIn 和 firstOut 的含义？
 	vertices.push_back({0, 0, 1, 1, {0, 0}});
 	vertices.push_back({0, 0, 5, 2, {0, 0}});
 	vertices.push_back({0, 0, 7, 4, {0, 0}});
@@ -120,8 +120,8 @@ MultiLevelPartition buildMultiLevelPartition(const Graph& g) {
 	MultiLevelPartition mlp;
 	mlp.setNumberOfLevels(2);
 	mlp.setNumberOfVertices(g.numberOfVertices());
-	mlp.setNumberOfCellsInLevel(0, 4);
-	mlp.setNumberOfCellsInLevel(1, 2);
+	mlp.setNumberOfCellsInLevel(0, 4); // 第0层4个cell
+	mlp.setNumberOfCellsInLevel(1, 2); // 第1层2个cell
 	mlp.computeBitmap();
 
 	std::vector<int> cells = {0, 0, 1, 3, 2, 1, 2, 1};

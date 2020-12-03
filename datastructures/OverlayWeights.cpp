@@ -57,7 +57,9 @@ void OverlayWeights::buildLowestLevel(const Graph& graph, const OverlayGraph& ov
 
 	index maxNumThreads = omp_get_max_threads();
 
+	// 根据最大线程数，设置可处理的权重类型，比如：jam, maneauver等类型。每种是一个一维数组。
 	std::vector<std::vector<weight>> dist(maxNumThreads, std::vector<weight>(graph.getMaxEdgesInCell(), inf_weight));
+	// 每种权重类型的最小队列
 	std::vector<MinIDQueue<IDKeyTriple>> queue(maxNumThreads, MinIDQueue<IDKeyTriple>(graph.getMaxEdgesInCell()));
 	std::vector<std::vector<index>> round(maxNumThreads, std::vector<index>(graph.getMaxEdgesInCell(), 0));
 	std::vector<index> currentRound(maxNumThreads, 0);

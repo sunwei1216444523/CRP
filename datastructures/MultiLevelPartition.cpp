@@ -40,6 +40,7 @@ void MultiLevelPartition::setNumberOfLevels(const size_t numLevels) {
 }
 
 void MultiLevelPartition::setNumberOfVertices(const int numVertices) {
+	// cellNumber大小和点数量一致，存储cell id, 先将cell id均初始化为0
 	cellNumbers = std::vector<pv>(numVertices, 0);
 }
 
